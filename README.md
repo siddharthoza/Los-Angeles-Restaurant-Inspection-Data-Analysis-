@@ -1,182 +1,165 @@
-<<<<<<< HEAD
-<!-- PROJECT SHIELDS -->
-[![Build Status][build-shield]]()
-[![Contributors][contributors-shield]]()
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][ http://www.linkedin.com/in/siddharthoza]
 
-
-
-=======
->>>>>>> 90ddc6905f25c04db975cb5c571afe11fbf0f033
-
-# Sign Language Interpreter using Deep Learning
-> A sign language interpreter using live video feed from the camera. 
-The project was completed in 24 hours as part of HackUNT-19, the University of North Texas's annual Hackathon. You can view the project demo on [YouTube](http://bit.ly/2Iaz2UK).
+# Los Angeles Restaurant Data Analysis and Prediction
+> An analysis of the inspection data of the restaurants in the 88 cities of Los Angeles county.
+The project was done as part of INFORMS Analytics Challenge at the University of Texas at Dallas. The entire summary of the project can be found in the [project report](https://github.com/siddharthoza/Los-Angeles-Restaurant-Inspection-Data-Analysis-/blob/master/Team%20Linear%20Digressors-Final.pdf).
 
 ## Table of contents
 * [General info](#general-info)
 * [Screenshots](#screenshots)
-* [Demo](#demo)
 * [Technologies and Tools](#technologies-and-tools)
 * [Setup](#setup)
-* [Process](#process)
 * [Code Examples](#code-examples)
 * [Features](#features)
 * [Status](#status)
+* [Inspiration](#inspiration)
 * [Contact](#contact)
 
 ## General info
-
-The theme at HACK UNT 19 was to use technology to improve accessibility by finding a creative solution to benefit the lives of those with a disability. 
-We wanted to make it easy for 70 million deaf people across the world to be independent of translators for there daily communication needs, so we designed the app to work as a personal translator 24*7 for the deaf people.
-
-## Demo
-![Example screenshot](./img/demo4.gif)
-
-
-
-![Example screenshot](./img/demo2.gif)
-
-
-
-![Example screenshot](./img/demo3.gif)
-
-
-**The entire demo of the project can be found on [YouTube](http://bit.ly/2Iaz2UK).**
-
+The data provided was published by the city of Los Angeles on Environment Health inspection and enforcement results from restaurants in the Los Angeles county. These data cover 85 of 88 cities and all
+unincorporated areas in the LA county. We have analyzed the data to answer 5 questions asked in the competition. We have also made a model to predict the health grade of the restaurant using only its address.
 
 ## Screenshots
-
 ![Example screenshot](./img/Capture1.PNG)
-![Example screenshot](./img/Capture.PNG)
+![Example screenshot](./img/Capture2.PNG)
+![Example screenshot](./img/Capture3.PNG)
+![Example screenshot](./img/Capture4.PNG)
+
+**The entire presentation of the project can be found [here](https://github.com/siddharthoza/Los-Angeles-Restaurant-Inspection-Data-Analysis-/blob/master/Team%20Linear%20Digressors-Final.pdf).**
 
 ## Technologies and Tools
-* Python 
-* TensorFlow
-* Keras
-* OpenCV
+* Python
+* Tableau 
+* Microsoft Excel
 
 ## Setup
 
-* Use comand promt to setup environment by using install_packages.txt and install_packages_gpu.txt files. 
- 
-`pyton -m pip r install_packages.txt`
+There are two datasets available: 
+(i) market inspection dataset: contains results of inspection;
+(ii) market violations dataset: contains information on health code violations in restaurants.
+The data was sourced in February 2019 and has data till January 16, 2019. Both the files can be found in [data](https://github.com/siddharthoza/Los-Angeles-Restaurant-Inspection-Data-Analysis-/tree/master/Input) and the updated data can also be downloaded from 
+[inspection data](https://data.lacounty.gov/Health/LOS-ANGELES-COUNTY-RESTAURANT-AND-MARKET-INSPECTIO/6ni6-h5kp) and [violations data](https://data.lacounty.gov/Health/LOS-ANGELES-COUNTY-RESTAURANT-AND-MARKET-VIOLATION/8jyd-4pv9).
 
-This will help you in installing all the libraries required for the project.
+The [code](https://github.com/siddharthoza/Los-Angeles-Restaurant-Inspection-Data-Analysis-/blob/master/Code/Naive%20Bayes%20Classification.ipynb) can be used to replicate the results. 
+The tableau visualizations can be found [here](https://github.com/siddharthoza/Los-Angeles-Restaurant-Inspection-Data-Analysis-/tree/master/Code).
 
-## Process
-
-* Run `set_hand_histogram.py` to set the hand histogram for creating gestures. 
-* Once you get a good histogram, save it in the code folder, or you can use the histogram created by us that can be found [here](https://github.com/harshbg/Sign-Language-Interpreter-using-Deep-Learning/blob/master/Code/hist).
-* Added gestures and label them using OpenCV which uses webcam feed. by running `create_gestures.py` and stores them in a database. Alternately, you can use the gestures created by us [here](https://github.com/harshbg/Sign-Language-Interpreter-using-Deep-Learning/tree/master/Code).
-* Add different variations to the captured gestures by flipping all the images by using `Rotate_images.py`.
-* Run `load_images.py` to split all the captured gestures into training, validation and test set. 
-* To view all the gestures, run `display_gestures.py` .
-* Train the model using Keras by running `cnn_model_train.py`.
-* Run `final.py`. This will open up the gesture recognition window which will use your webcam to interpret the trained American Sign Language gestures.  
 
 ## Code Examples
+Some examples of usage:
 
 ````
-# Model Traiining using CNN
+Naive Bayes Classification
 
-import numpy as np
-import pickle
-import cv2, os
-from glob import glob
-from keras import optimizers
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import Flatten
-from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPooling2D
-from keras.utils import np_utils
-from keras.callbacks import ModelCheckpoint
-from keras import backend as K
-K.set_image_dim_ordering('tf')
+  def train(self,dataset,labels):
+        
+  
+        self.examples=dataset
+        self.labels=labels
+        self.bow_dicts=np.array([defaultdict(lambda:0) for index in range(self.classes.shape[0])])
+        
+        #only convert to numpy arrays if initially not passed as numpy arrays - else its a useless recomputation
+        
+        if not isinstance(self.examples,np.ndarray): self.examples=np.array(self.examples)
+        if not isinstance(self.labels,np.ndarray): self.labels=np.array(self.labels)
+            
+        #constructing BoW for each category
+        for cat_index,cat in enumerate(self.classes):
+          
+            all_cat_examples=self.examples[self.labels==cat] #filter all examples of category == cat
+            
+            #get examples preprocessed
+            
+            cleaned_examples=[preprocess_string(cat_example) for cat_example in all_cat_examples]
+            
+            cleaned_examples=pd.DataFrame(data=cleaned_examples)
+            
+            #now costruct BoW of this particular category
+            np.apply_along_axis(self.addToBow,1,cleaned_examples,cat_index)
+            
+                      
+        prob_classes=np.empty(self.classes.shape[0])
+        all_words=[]
+        cat_word_counts=np.empty(self.classes.shape[0])
+        for cat_index,cat in enumerate(self.classes):
+           
+            #Calculating prior probability p(c) for each class
+            prob_classes[cat_index]=np.sum(self.labels==cat)/float(self.labels.shape[0]) 
+            
+            #Calculating total counts of all the words of each class 
+            count=list(self.bow_dicts[cat_index].values())
+            cat_word_counts[cat_index]=np.sum(np.array(list(self.bow_dicts[cat_index].values())))+1 # |v| is remaining to be added
+            
+            #get all words of this category                                
+            all_words+=self.bow_dicts[cat_index].keys()
+                                                     
+        
+        #combine all words of every category & make them unique to get vocabulary -V- of entire training set
+        
+        self.vocab=np.unique(np.array(all_words))
+        self.vocab_length=self.vocab.shape[0]
+                                  
+        #computing denominator value                                      
+        denoms=np.array([cat_word_counts[cat_index]+self.vocab_length+1 for cat_index,cat in enumerate(self.classes)])                                                                          
+      
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+        
+        self.cats_info=[(self.bow_dicts[cat_index],prob_classes[cat_index],denoms[cat_index]) for cat_index,cat in enumerate(self.classes)]                               
+        self.cats_info=np.array(self.cats_info)                                 
+                                              
+                                              
 
-def get_image_size():
-	img = cv2.imread('gestures/1/100.jpg', 0)
-	return img.shape
+   
+    def test(self,test_set):
+      
 
-def get_num_of_classes():
-	return len(glob('gestures/*'))
-
-image_x, image_y = get_image_size()
-
-def cnn_model():
-	num_of_classes = get_num_of_classes()
-	model = Sequential()
-	model.add(Conv2D(16, (2,2), input_shape=(image_x, image_y, 1), activation='relu'))
-	model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2), padding='same'))
-	model.add(Conv2D(32, (3,3), activation='relu'))
-	model.add(MaxPooling2D(pool_size=(3, 3), strides=(3, 3), padding='same'))
-	model.add(Conv2D(64, (5,5), activation='relu'))
-	model.add(MaxPooling2D(pool_size=(5, 5), strides=(5, 5), padding='same'))
-	model.add(Flatten())
-	model.add(Dense(128, activation='relu'))
-	model.add(Dropout(0.2))
-	model.add(Dense(num_of_classes, activation='softmax'))
-	sgd = optimizers.SGD(lr=1e-2)
-	model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
-	filepath="cnn_model_keras2.h5"
-	checkpoint1 = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-	callbacks_list = [checkpoint1]
-	#from keras.utils import plot_model
-	#plot_model(model, to_file='model.png', show_shapes=True)
-	return model, callbacks_list
-
-def train():
-	with open("train_images", "rb") as f:
-		train_images = np.array(pickle.load(f))
-	with open("train_labels", "rb") as f:
-		train_labels = np.array(pickle.load(f), dtype=np.int32)
-
-	with open("val_images", "rb") as f:
-		val_images = np.array(pickle.load(f))
-	with open("val_labels", "rb") as f:
-		val_labels = np.array(pickle.load(f), dtype=np.int32)
-
-	train_images = np.reshape(train_images, (train_images.shape[0], image_x, image_y, 1))
-	val_images = np.reshape(val_images, (val_images.shape[0], image_x, image_y, 1))
-	train_labels = np_utils.to_categorical(train_labels)
-	val_labels = np_utils.to_categorical(val_labels)
-
-	print(val_labels.shape)
-
-	model, callbacks_list = cnn_model()
-	model.summary()
-	model.fit(train_images, train_labels, validation_data=(val_images, val_labels), epochs=15, batch_size=500, callbacks=callbacks_list)
-	scores = model.evaluate(val_images, val_labels, verbose=0)
-	print("CNN Error: %.2f%%" % (100-scores[1]*100))
-	#model.save('cnn_model_keras2.h5')
-
-train()
-K.clear_session();
+        predictions=[] #to store prediction of each test example
+        for example in test_set: 
+                                              
+            #preprocess the test example the same way we did for training set exampels                                  
+            cleaned_example=preprocess_string(example) 
+             
+            #simply get the posterior probability of every example                                  
+            post_prob=self.getExampleProb(cleaned_example) #get prob of this example for both classes
+            
+            #simply pick the max value and map against self.classes!
+            predictions.append(self.classes[np.argmax(post_prob)])
+                
+        return np.array(predictions)
 
 ````
+
+````
+nb=NaiveBayes(np.unique(train_labels)) #instantiate a NB class object
+print ("---------------- Training In Progress --------------------")
+ 
+nb.train(train_data,train_labels) #start tarining by calling the train function
+print ('----------------- Training Completed ---------------------')
+
+
+pclasses=nb.test(test_data) #get predcitions for test set
+
+#check how many predcitions actually match original test labels
+test_acc=np.sum(pclasses==test_labels)/float(test_labels.shape[0]) 
+
+print ("Test Set Examples: ",test_labels.shape[0]) # Outputs : Test Set Examples:  1502
+print ("Test Set Accuracy: ",test_acc*100,"%") # Outputs : Test Set Accuracy:  93.8748335553 %
+
+````
+
 
 ## Features
-Our model was able to predict the 44 characters in the ASL with a prediction accuracy >95%.
+We have tried to answer the following questions in our analysis:
 
-Features that can be added:
-* Deploy the project on cloud and create an API for using it.
-* Increase the vocabulary of our model
-* Incorporate feedback mechanism to make the model more robust
-* Add more sign languages
+* What are the key factors in predicting health “scores” of the restaurants in Los Angeles county?
+* What are the most important factors in classifying restaurants into different “grades”?
+* Are there any relationships between various types of health code violations and scores/grades of a restaurant?
+* Are there any patterns in terms of how health scores of restaurants change over time?
 
 ## Status
-Project is: _finished_. Our team was the winner of the UNT Hackaton 2019. You can find the our final submission post on [devpost](http://bit.ly/2WWllwg). 
+Project is: _finished_. Our team was the winner of the INFORMS Analytics Challenge 2019. Our college, [The University of Texas at Dallas](https://www.utdallas.edu/) has published an [article](https://jindal.utdallas.edu/news/business-analytics-teams-bring-home-three-firsts) detailing the account of the competitions win by our team "Linear Digressors". 
+
+## Inspiration
+The cover photo of the Presentation template is to replicate the Los-Angeles skyline. 
+[Los Angeles skyline silhouette design](https://www.vexels.com/vectors/preview/79018/los-angeles-skyline-silhouette-design) | designed by Vexels
 
 ## Contact
-Created by me with my teammates [Siddharth Oza](https://github.com/siddharthoza), [Ashish Sharma](https://github.com/ashish1993utd), and [Manish Shukla](https://github.com/Manishms18).
-
-If you loved what you read here and feel like we can collaborate to produce some exciting stuff, or if you
-just want to shoot a question, please feel free to connect with me on <a href="hello@gupta-harsh.com" target="_blank">email</a>, 
-<a href="http://bit.ly/2uOIUeo" target="_blank">LinkedIn</a>, or 
-<a href="http://bit.ly/2CZv1i5" target="_blank">Twitter</a>. 
-My other projects can be found [here](http://bit.ly/2UlyFgC).
+Created by me and my teammate [Harsh Gupta](https://github.com/harshbg), and [Ashish Sharma](https://github.com/ashish1993utd).

@@ -162,4 +162,4 @@ The cover photo of the Presentation template is to replicate the Los-Angeles sky
 [Los Angeles skyline silhouette design](https://www.vexels.com/vectors/preview/79018/los-angeles-skyline-silhouette-design) | designed by Vexels
 
 ## Contact
-Created by me and my teammate [Harsh Gupta](https://github.com/harshbg), and [Ashish Sharma](https://github.com/ashish1993utd).
+Created by me and my teammate <a href="https://harshgupta.com/">Harsh Gupta</a>, and [Ashish Sharma](https://github.com/ashish1993utd).
